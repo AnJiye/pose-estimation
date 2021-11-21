@@ -52,6 +52,7 @@ for (var i = 0; i < data.length; i++) {
   data[i] = new Array(34);
 }
 
+// const btnElement = document.getElementById("info");
 var start = new Audio("audio/start.mp3");
 var end = new Audio("audio/end.mp3");
 
@@ -175,6 +176,7 @@ function getCSV() {
   }
 }
 
+// csv 다운로드
 function downloadCSV() {
   var downloadLink = document.createElement("a");
   var blob = new Blob([row], { type: "text/csv;charset=utf-8" });
@@ -187,4 +189,22 @@ function downloadCSV() {
   document.body.removeChild(downloadLink);
 
   console.log("csv 파일을 다운로드했습니다.");
+}
+
+// 데이터 비우기
+function clearData() {
+  if (confirm("데이터를 비우시겠습니까?")) {
+    // 확인 버튼 클릭 시 동작
+    row = "";
+    for (let i = 0; i < colName.length; i++) {
+      row += colName[i] + ",";
+    }
+    row += "\r\n";
+    alert("데이터가 삭제되었습니다.");
+    const btnElement = document.getElementById("info");
+    btnElement.innerHTML = "좌표가 아직 저장되지 않았습니다.";
+  } else {
+    // 취소 버튼 클릭 시 동작
+    return;
+  }
 }
