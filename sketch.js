@@ -52,7 +52,6 @@ for (var i = 0; i < data.length; i++) {
   data[i] = new Array(34);
 }
 
-// const btnElement = document.getElementById("info");
 var start = new Audio("audio/start.mp3");
 var end = new Audio("audio/end.mp3");
 

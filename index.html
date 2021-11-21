@@ -3,7 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DataSet</title>
+    <title>Pose Estimation</title>
+    <Style>
+      #btn_group button{
+        border: 1px solid #909FA6;
+        background-color:rgba(0,0,0,0);
+        color: #909FA6;
+        padding: 5px;
+        border-radius: 5px;
+      }
+      #btn_group button:hover{
+        color:white;
+        background-color: #909FA6;
+      }
+    </Style>
     <script src="https://unpkg.com/ml5@0.4.3/dist/ml5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.js"></script>
     <link rel="shortcut icon" href="#">
@@ -11,22 +24,24 @@
   <body>
     <div style="text-align: center;">
       <script src="sketch.js"></script>
-      <button 
-        id='coordinateButton' 
-        onclick='exec()'> 
-        좌표 저장
-      </button>
-      <button
-        id='saveButton'
-        onclick='downloadCSV()'>
-        csv 다운로드
-      </button>
-      <button
-        id='clearButton'
-        onclick="clearData()">
-        데이터 비우기
-      </button>
-      <p id="info" style="font-size: small;">좌표가 아직 저장되지 않았습니다. </p>
+      <div id="btn_group">
+        <button 
+          id='coordinateButton' 
+          onclick='exec()'> 
+          좌표 저장
+        </button>
+        <button
+          id='saveButton'
+          onclick='downloadCSV()'>
+          csv 다운로드
+        </button>
+        <button
+          id='clearButton'
+          onclick="clearData()">
+          데이터 비우기
+        </button>
+      </div>
+      <p id="info" style="font-size: small;">좌표가 아직 저장되지 않았습니다.</p>
     </div>
   </body>
 </html>
