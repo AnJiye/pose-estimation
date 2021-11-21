@@ -52,6 +52,9 @@ for (var i = 0; i < data.length; i++) {
   data[i] = new Array(34);
 }
 
+var start = new Audio("audio/start.mp3");
+var end = new Audio("audio/end.mp3");
+
 function setup() {
   createCanvas(800, 580);
   video = createCapture(VIDEO);
@@ -105,12 +108,16 @@ function exec() {
 }
 
 function repeat() {
+  // 시작을 알림
+  start.play();
   const btnElement = document.getElementById("info");
   // 0.4초마다 30번 반복
   var re = setInterval(function () {
     saveCoordinate();
     console.log(count + "번째 반복 중");
     if (count == 30) {
+      // 종료를 알림
+      end.play();
       btnElement.innerHTML = count + "개의 좌표가 저장 완료되었습니다.";
       clearInterval(re);
       count = 0;
@@ -126,14 +133,32 @@ function saveCoordinate() {
   btnElement.innerHTML = count + 1 + "개의 좌표 저장 중...";
 
   var col = 0;
+  var score = 0;
   for (let i = 0; i < pose.keypoints.length; i++) {
-    if (pose.keypoints[i].score < 0.7) {
-      console.log(pose.keypoints[i].part + "의 정확도가 70% 미만입니다.");
-      i = 0;
-      // 다시 처음(코)부터 저장 시작 - 잘못하면 무한루프 돌아서 인터넷 멈춰버림..
+    if (pose.keypoints[i].score < 0.1) {
+      score = Math.round(pose.keypoints[i].score * 100);
+      console.log(
+        pose.keypoints[i].part + "의 정확도가 " + score + "%로 10% 미만입니다. "
+      );
+      // 방법 1) 다시 처음(코)부터 저장 시작 => 내 인터넷 문제인지 잘못하면 무한루프 돌아서 멈춰버림..
+      // i = 0;
+
+      // 방법 2) 정확도 낮은 지점부터 다시 저장 시작 => 무한루프
+      // i--;
       // continue;
-      // 그냥 빈칸으로 하고 다음 데이터로 넘어가기 - 이건 전처리 과정에서 0인 값 빼면 되니까 괜찮을 거 같기도
-      break;
+
+      // 방법 3) 그냥 빈칸으로 하고 다음 데이터로 넘어가기
+      // break;
+
+      // 방법 4) 그냥 측정 => 확인해보니까 정확도가 낮아도 비슷하게 측정됨
+      // data[count][col++] = Math.round(pose.keypoints[i].position.x);
+      // data[count][col++] = Math.round(pose.keypoints[i].position.y);
+      // console.log(pose.keypoints[i].part + " 저장 성공");
+
+      // 방법 5) 해당 값 0으로 두고 다음 좌표로 넘어가기 - 정확도 0.1 미만
+      data[count][col++] = 0;
+      data[count][col++] = 0;
+      console.log(pose.keypoints[i].part + " 저장 성공");
     } else {
       data[count][col++] = Math.round(pose.keypoints[i].position.x);
       data[count][col++] = Math.round(pose.keypoints[i].position.y);
